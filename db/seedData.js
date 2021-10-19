@@ -5,14 +5,32 @@ const client = require('./client');
 async function dropTables() {
   console.log('Dropping All Tables...');
   // drop all tables, in the correct order
+  try {
+    console.log('Starting to drop tables...');
+    
+    client.query(`
+      DROP TABLE IF EXISTS users;
+      DROP TABLE IF EXISTS activities;
+      DROP TABLES IF EXISTS routines;
+      DROP TABLES IF EXiSTS routineActivities;
+    `);
 
+    console.log('Finished dropping tables!');
+  } catch (error) {
+    console.error('Error while dropping tables!');
+
+    throw error;
+  }
 }
 
 async function createTables() {
   console.log("Starting to build tables...");
   // create all tables, in the correct order
 
+  
+  
 }
+
 
 /* 
 
