@@ -2,5 +2,6 @@
 
 module.exports = {
 	...require("./activities"),
-   ...require("./users")
+   ...require("./users"),
+   ...require("./routine_activities")
 };
