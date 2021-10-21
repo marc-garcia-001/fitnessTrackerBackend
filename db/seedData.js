@@ -3,6 +3,34 @@
 
 const client = require("./client");
 
+const {
+  createUser,
+  getUser,
+  getUserById,
+  getUserByUsername,
+  // getActivityById,
+  // getAllActivities,
+  // createActivity,
+  // updateActivity,
+  // getRoutineById,
+  // getRoutinesWithoutActivities,
+  // getAllRoutines,
+  // getAllPublicRoutines,
+  // getAllRoutinesByUser,
+  // getPublicRoutinesByUser,
+  // getPublicRoutinesByActivity,
+  // createRoutine,
+  // updateRoutine,
+  // destroyRoutine,
+  // getRoutineActivityById,
+  // addActivityToRoutine,
+  // updateRoutineActivity,
+  // destroyRoutineActivity,
+  // getRoutineActivitiesByRoutine
+} = require("./");
+
+//
+
 async function dropTables() {
   console.log("Dropping All Tables...");
   // drop all tables, in the correct order
@@ -10,10 +38,10 @@ async function dropTables() {
     console.log("Starting to drop tables...");
 
     client.query(`
-      DROP TABLE IF EXISTS users;
+      DROP TABLE IF EXISTS routine_activities;
+      DROP TABLE IF EXISTS routines;
       DROP TABLE IF EXISTS activities;
-      DROP TABLES IF EXISTS routines;
-      DROP TABLES IF EXiSTS routineActivities;
+      DROP TABLE IF EXISTS users;
     `);
 
     console.log("Finished dropping tables!");
@@ -29,31 +57,32 @@ async function createTables() {
     console.log("Starting to build tables...");
 
     await client.query(`
-    CREATE TABLE users
-    id SERIAL PRIMARY KEY
-    username VARCHAR(255) UNIQUE NOT NULL
-    password VARCHAR(255) NOT NULL
+    CREATE TABLE users(
+    id SERIAL PRIMARY KEY,
+    username VARCHAR(255) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL);
     
-    CREATE TABLE activities
-    id SERIAL PRIMARY KEY
-    name VARCHAR(255) UNIQUE NOT NULL
-    description TEXT NOT NULL
+    CREATE TABLE activities(
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) UNIQUE NOT NULL,
+    description TEXT NOT NULL);
 
-    CREATE TABLE routines
-    id SERIAL PRIMARY KEY
-    "creatorId" INTEGER FOREIGN KEY
-    "isPublic" BOOLEAN DEFAULT false
-    name VARCHAR(255) UNIQUE NOT NULL
-    goal TEXT NOT NULL
+    CREATE TABLE routines(
+    id SERIAL PRIMARY KEY,
+    "creatorId" INTEGER REFERENCES users(id) NOT NULL,
+    "isPublic" BOOLEAN DEFAULT false,
+    name VARCHAR(255) UNIQUE NOT NULL,
+    goal TEXT NOT NULL);
 
-    CREATE TABLE routine_activities
-    id SERIAL PRIMARY KEY
-    "routineId" INTEGER FOREIGN KEY UNIQUE 
-    "activityId" INTEGER FOREIGN KEY UNIQUE
-    duration INTEGER
-    count INTEGER
+    CREATE TABLE routine_activities(
+    id SERIAL PRIMARY KEY,
+    "routineId" INTEGER REFERENCES routines(id) NOT NULL,
+    "activityId" INTEGER REFERENCES activities(id) NOT NULL, 
+    duration INTEGER,
+    count INTEGER)
 
     `);
+    console.log("Finished constructing tables!");
   } catch (error) {
     console.error("Error constructing tables!");
 
@@ -75,8 +104,8 @@ async function createInitialUsers() {
       { username: "sandra", password: "sandra123" },
       { username: "glamgal", password: "glamgal123" },
     ];
-    const users = await Promise.all(usersToCreate.map(createUser));
 
+    const users = await Promise.all(usersToCreate.map(createUser));
     console.log("Users created:");
     console.log(users);
     console.log("Finished creating users!");
@@ -242,9 +271,9 @@ async function rebuildDB() {
     await dropTables();
     await createTables();
     await createInitialUsers();
-    await createInitialActivities();
-    await createInitialRoutines();
-    await createInitialRoutineActivities();
+    // await createInitialActivities();
+    // await createInitialRoutines();
+    // await createInitialRoutineActivities();
   } catch (error) {
     console.log("Error during rebuildDB");
     throw error;
