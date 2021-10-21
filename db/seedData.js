@@ -1,15 +1,38 @@
 // require in the database adapter functions as you write them (createUser, createActivity...)
 // const { } = require('./');
+
+
 const client = require("./client");
 
 const {
   createUser,
+
+=======
+  getUser,
+  getUserById,
+  getUserByUsername,
+  getActivityById,
   getAllActivities,
   createActivity,
-  createRoutine,
-  getRoutinesWithoutActivities,
-  addActivityToRoutine
-} = require("./")
+  updateActivity,
+  // getRoutineById,
+  // getRoutinesWithoutActivities,
+  // getAllRoutines,
+  // getAllPublicRoutines,
+  // getAllRoutinesByUser,
+  // getPublicRoutinesByUser,
+  // getPublicRoutinesByActivity,
+  // createRoutine,
+  // updateRoutine,
+  // destroyRoutine,
+  // getRoutineActivityById,
+  // addActivityToRoutine,
+  // updateRoutineActivity,
+  // destroyRoutineActivity,
+  // getRoutineActivitiesByRoutine
+} = require("./");
+
+//
 
 async function dropTables() {
   console.log("Dropping All Tables...");
@@ -23,7 +46,6 @@ async function dropTables() {
       DROP TABLE IF EXISTS routines;
       DROP TABLE IF EXISTS activities;
       DROP TABLE IF EXISTS users;
-      
     `);
 
     console.log("Finished dropping tables!");
@@ -35,6 +57,7 @@ async function dropTables() {
 }
 
 async function createTables() {
+  
   try {
     console.log("Starting to build tables...");
     await client.query(`
@@ -84,6 +107,7 @@ async function createInitialUsers() {
       { username: "sandra", password: "sandra123" },
       { username: "glamgal", password: "glamgal123" },
     ];
+
     const users = await Promise.all(usersToCreate.map(createUser));
 
     console.log("Users created:");
@@ -250,7 +274,7 @@ async function rebuildDB() {
     client.connect();
     await dropTables();
     await createTables();
-    // await createInitialUsers();
+    await createInitialUsers();
     await createInitialActivities();
     // await createInitialRoutines();
     // await createInitialRoutineActivities();
