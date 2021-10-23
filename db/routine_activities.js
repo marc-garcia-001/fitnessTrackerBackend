@@ -105,7 +105,7 @@ async function getRoutineActivitiesByRoutine({ id }) {
 module.exports = {
   getRoutineActivityById,
   addActivityToRoutine,
-  //   updateRoutineActivity,
-  //   destroyRoutineActivity,
-  //   getRoutineActivitiesByRoutine,
+  updateRoutineActivity,
+  destroyRoutineActivity,
+  getRoutineActivitiesByRoutine
 };
