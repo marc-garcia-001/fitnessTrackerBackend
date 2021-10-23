@@ -41,7 +41,6 @@ describe("Database", () => {
     await client.end();
   });
   describe("Users", () => {
-
     let userToCreateAndUpdate, queriedUser;
     let userCredentials = { username: "billybob", password: "bobbybadboy" };
     describe("createUser({ username, password })", () => {
@@ -124,12 +123,10 @@ describe("Database", () => {
         activityToUpdate.name = "standing barbell curl";
         const activity = await updateActivity(activityToUpdate);
         expect(activity).toEqual(activityToUpdate);
-
       });
     });
   });
-  xdescribe("Routines", () => {
-
+  describe("Routines", () => {
     let routineToCreateAndUpdate;
     describe("getActivityById", () => {
       it("gets activities by their id", async () => {
@@ -228,7 +225,6 @@ describe("Database", () => {
           })
         );
         expect(routine.creatorId).toBe(user.id);
-
       });
       it("includes username, from users join, aliased as creatorName", async () => {
         expect(routine).toEqual(
@@ -250,7 +246,7 @@ describe("Database", () => {
       });
     });
     describe("getPublicRoutinesByUser", () => {
-      
+
       let routine, user;
       beforeAll(async () => {
         user = await getUserById(1);
@@ -308,28 +304,41 @@ describe("Database", () => {
         );
         expect(routine.isPublic).toBe(true);
 
-      })
-      it('includes username, from users join, aliased as creatorName', async () => {
-        expect(routine).toEqual(expect.objectContaining({
-          creatorName: expect.any(String),
-        }));
-      })
-      it('includes duration and count on activities, from routine_activities join', async () => {
-        const {activities: [firstActivity]} = routine;
-        expect(firstActivity).toEqual(expect.objectContaining({
-          duration: expect.any(Number),
-          count: expect.any(Number),
-        }));
-      })
-    })
-    describe('createRoutine', () => {
-      it('creates and returns the new routine', async () => {
-        routineToCreateAndUpdate = await createRoutine({creatorId: 2, isPublic: true, name: 'BodyWeight Day', goal: 'Do workouts that can be done from home, no gym or weights required.'});
-        const queriedRoutine = await getRoutineById(routineToCreateAndUpdate.id)
+      });
+      it("includes username, from users join, aliased as creatorName", async () => {
+        expect(routine).toEqual(
+          expect.objectContaining({
+            creatorName: expect.any(String),
+          })
+        );
+      });
+      it("includes duration and count on activities, from routine_activities join", async () => {
+        const {
+          activities: [firstActivity],
+        } = routine;
+        expect(firstActivity).toEqual(
+          expect.objectContaining({
+            duration: expect.any(Number),
+            count: expect.any(Number),
+          })
+        );
+      });
+    });
+    describe("createRoutine", () => {
+      it("creates and returns the new routine", async () => {
+        routineToCreateAndUpdate = await createRoutine({
+          creatorId: 2,
+          isPublic: true,
+          name: "BodyWeight Day",
+          goal: "Do workouts that can be done from home, no gym or weights required.",
+        });
+        const queriedRoutine = await getRoutineById(
+          routineToCreateAndUpdate.id
+        );
         expect(routineToCreateAndUpdate).toEqual(queriedRoutine);
-      })
-    })
-    describe('updateRoutine', () => {
+      });
+    });
+    describe("updateRoutine", () => {
 
       let queriedRoutine;
       beforeAll(async () => {
@@ -385,10 +394,10 @@ describe("Database", () => {
         );
         expect(queriedRoutineActivities.length).toBe(0);
 
-      })
-    })
-  })
-  describe('Routine Activities', () => {
+      });
+    });
+  });
+  describe("Routine Activities", () => {
 
     const routineActivityData = {
       routineId: 4,
