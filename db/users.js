@@ -93,7 +93,9 @@ async function getUserByUsername(username) {
     } else {
       throw Error("User by this username doesn't exist!");
     }
-  } catch (error) {}
+  } catch (error) {
+    throw error;
+  }
 }
 
 //
