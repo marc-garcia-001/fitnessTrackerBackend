@@ -36,13 +36,10 @@ async function getUser({ username, password }) {
   if (!user) {
     return;
   }
-
-  console.log(user);
   const hashedPassword = user.password;
   const passwordsMatch = await bcrypt.compare(password, hashedPassword);
 
   if (passwordsMatch) {
-    console.log(hashedPassword);
     delete user.password;
     return user;
   } else {

@@ -207,7 +207,7 @@ describe("Database", () => {
         );
       });
     });
-    describe("getAllRoutinesByUser", () => {
+    xdescribe("getAllRoutinesByUser", () => {
       let routine, user;
       beforeAll(async () => {
         user = await getUserById(1);
@@ -245,7 +245,7 @@ describe("Database", () => {
         );
       });
     });
-    describe("getPublicRoutinesByUser", () => {
+    xdescribe("getPublicRoutinesByUser", () => {
       let routine, user;
       beforeAll(async () => {
         user = await getUserById(1);
@@ -284,7 +284,7 @@ describe("Database", () => {
         );
       });
     });
-    describe("getPublicRoutinesByActivity", () => {
+    xdescribe("getPublicRoutinesByActivity", () => {
       let routine, activity;
       beforeAll(async () => {
         activity = await getActivityById(3);
@@ -336,7 +336,7 @@ describe("Database", () => {
         expect(routineToCreateAndUpdate).toEqual(queriedRoutine);
       });
     });
-    describe("updateRoutine", () => {
+    xdescribe("updateRoutine", () => {
       let queriedRoutine;
       beforeAll(async () => {
         routineToCreateAndUpdate = await updateRoutine({
@@ -370,7 +370,7 @@ describe("Database", () => {
         expect(routineToCreateAndUpdate.goal).toBe(queriedRoutine.goal);
       });
     });
-    describe("destroyRoutine", () => {
+    xdescribe("destroyRoutine", () => {
       it("removes routine from database", async () => {
         await destroyRoutine(routineToCreateAndUpdate.id);
         const {
