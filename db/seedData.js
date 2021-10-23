@@ -22,11 +22,11 @@ const {
   createRoutine,
   updateRoutine,
   destroyRoutine,
-  // getRoutineActivityById,
-  // addActivityToRoutine,
-  // updateRoutineActivity,
-  // destroyRoutineActivity,
-  // getRoutineActivitiesByRoutine
+  getRoutineActivityById,
+  addActivityToRoutine,
+  updateRoutineActivity,
+  destroyRoutineActivity,
+  getRoutineActivitiesByRoutine
 } = require("./");
 
 //
@@ -79,7 +79,9 @@ async function createTables() {
     "routineId" INTEGER REFERENCES routines(id),
     "activityId" INTEGER REFERENCES activities(id),
     duration INTEGER,
-    count INTEGER)
+    count INTEGER,
+    UNIQUE ("routineId", "activityId")
+    );
     `);
 
     console.log("Finished constructing tables!");
