@@ -1,13 +1,10 @@
 // require in the database adapter functions as you write them (createUser, createActivity...)
 // const { } = require('./');
 
-
 const client = require("./client");
 
 const {
   createUser,
-
-=======
   getUser,
   getUserById,
   getUserByUsername,
@@ -15,16 +12,16 @@ const {
   getAllActivities,
   createActivity,
   updateActivity,
-  // getRoutineById,
-  // getRoutinesWithoutActivities,
-  // getAllRoutines,
-  // getAllPublicRoutines,
-  // getAllRoutinesByUser,
-  // getPublicRoutinesByUser,
-  // getPublicRoutinesByActivity,
-  // createRoutine,
-  // updateRoutine,
-  // destroyRoutine,
+  getRoutineById,
+  getRoutinesWithoutActivities,
+  getAllRoutines,
+  getAllPublicRoutines,
+  getAllRoutinesByUser,
+  getPublicRoutinesByUser,
+  getPublicRoutinesByActivity,
+  createRoutine,
+  updateRoutine,
+  destroyRoutine,
   // getRoutineActivityById,
   // addActivityToRoutine,
   // updateRoutineActivity,
@@ -57,7 +54,6 @@ async function dropTables() {
 }
 
 async function createTables() {
-  
   try {
     console.log("Starting to build tables...");
     await client.query(`
