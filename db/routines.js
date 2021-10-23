@@ -8,7 +8,7 @@ async function getRoutineById(id) {
       `
             SELECT *
             FROM routines
-            WHERE id=$1
+            WHERE id=$1;
             `,
       [id]
     );
@@ -24,7 +24,7 @@ async function getRoutinesWithoutActivities() {
   try {
     const { rows } = await client.query(
       `
-    SELECT *
+    SELECT routines.id, routines."creatorId", routines."isPublic", routines.name, routines.goal 
     FROM routines
      `
     );
@@ -40,10 +40,10 @@ async function getAllRoutines() {
   try {
     const { rows: routines } = await client.query(
       `
-    SELECT *, user.username AS "creatorName"
-    FROM routines
-    JOIN users ON routines WHERE "creatorId" = user.id
-    `
+        SELECT routines.*, users.username AS "creatorName"
+        FROM routines
+        JOIN users ON routines."creatorId" = users.id;
+        `
     );
     return routines;
   } catch (error) {
@@ -55,16 +55,14 @@ async function getAllRoutines() {
 
 async function getAllPublicRoutines() {
   try {
-    const {
-      rows: [routine],
-    } = await client.query(
+    const { rows: routines } = await client.query(
       `
-        SELECT *
+        SELECT routines.id, routines."creatorId", routines."isPublic", routines.name, routines.goal, routines.activities
         FROM routines
         WHERE "isPublic"=true
         `
     );
-    return routine;
+    return routines;
   } catch (error) {
     throw error;
   }
@@ -74,9 +72,7 @@ async function getAllPublicRoutines() {
 
 async function getAllRoutinesByUser({ username }) {
   try {
-    const {
-      rows: [routine],
-    } = await client.query(
+    const { rows: routines } = await client.query(
       `
             SELECT *
             FROM routines
@@ -84,7 +80,7 @@ async function getAllRoutinesByUser({ username }) {
             `,
       [username]
     );
-    return routine;
+    return routines;
   } catch (error) {
     throw error;
   }
@@ -94,14 +90,14 @@ async function getAllRoutinesByUser({ username }) {
 
 async function getPublicRoutinesByUser({ username }) {
   try {
-    const { rows } = await client.query(
+    const { rows: routines } = await client.query(
       `
             SELECT *
             FROM routines
             WHERE username=$1 && "isPublic"=true
             `
     );
-    return rows;
+    return routines;
   } catch (error) {
     throw error;
   }
@@ -111,7 +107,7 @@ async function getPublicRoutinesByUser({ username }) {
 
 async function getPublicRoutinesByActivity({ id }) {
   try {
-    const { rows } = await client.query(
+    const { rows: routines } = await client.query(
       `
             SELECT *
             FROM routine_activites
@@ -119,7 +115,7 @@ async function getPublicRoutinesByActivity({ id }) {
             `,
       [id]
     );
-    return rows;
+    return routines;
   } catch (error) {
     throw error;
   }
