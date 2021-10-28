@@ -90,6 +90,7 @@ usersRouter.post("/login", async (req, res, next) => {
           expiresIn: "1w",
         }
       );
+      console.log(token,"TOKEN!!!!!!!!")
       res.send({ message: "you're logged in!", token, user });
     } else {
       next({

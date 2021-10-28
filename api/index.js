@@ -16,7 +16,7 @@ apiRouter.get("/health", async (req, res, next) => {
 apiRouter.use(async (req, res, next) => {
   const prefix = "Bearer ";
   const auth = req.header("Authorization");
-
+console.log(auth)
   if (!auth) {
     next();
   } else if (auth.startsWith(prefix)) {
@@ -38,13 +38,6 @@ apiRouter.use(async (req, res, next) => {
       message: `Authorization token must start with ${prefix}`,
     });
   }
-});
-
-
-apiRouter.get("/health", async (req, res, next) => {
-  res.send({
-    message: "The server is healthy",
-  });
 });
 
 const usersRouter = require("./users");
