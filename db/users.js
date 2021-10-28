@@ -88,10 +88,10 @@ async function getUserByUsername(username) {
       [username]
     );
 
-    if (user) {
-      return user;
+    if (!user) {
+      return null;
     } else {
-      throw Error("User by this username doesn't exist!");
+      return user;
     }
   } catch (error) {
     throw error;

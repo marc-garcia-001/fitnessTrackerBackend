@@ -108,6 +108,7 @@ async function getPublicRoutinesByUser({ username }) {
       [userInfo.id]
     );
     return attachActivitiesToRoutines(routines);
+    0;
   } catch (error) {
     throw error;
   }
