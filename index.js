@@ -6,6 +6,9 @@ require("dotenv").config();
 
 const server = express();
 
+const cors = require("cors")
+server.use(cors())
+
 //
 
 const bodyParser = require("body-parser");
