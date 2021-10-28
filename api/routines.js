@@ -7,34 +7,47 @@ const {
   updateRoutine,
   destroyRoutine,
   addActivityToRoutine,
+  destroyRoutineActivity,
 } = require("../db");
 const { requireUser } = require("../utilities");
 
-routinesRouter.get("/routines", async (req, res, next) => {
+//
+
+routinesRouter.get("/", async (req, res, next) => {
   try {
     const routines = await getAllPublicRoutines();
     res.send(routines);
-
-    return getAllPublicRoutines();
   } catch (error) {
     next(error);
   }
 });
+
+//
 
 routinesRouter.post("/", requireUser, async (req, res, next) => {
   const { name, goal, isPublic } = req.body;
-  const newRoutineData = {};
+
   try {
-    newRoutineData.creatorId = req.user.id;
-    newRoutineData.name = name;
-    newRoutineData.goal = goal;
-    newRoutineData.isPublic = isPublic;
-    const routine = await createRoutine(newRoutineData);
-    res.send(routine);
+    const routine = await createRoutine({
+      creatorId: req.user.id,
+      isPublic,
+      name,
+      goal,
+    });
+    if (routine) {
+      res.send(routine);
+    } else {
+      next({
+        name: "failedToCreate",
+        message: "Could not create routine!",
+      });
+    }
   } catch (error) {
     next(error);
   }
 });
+
+//
 
 routinesRouter.patch("/:routineId", requireUser, async (req, res, next) => {
   try {
@@ -63,15 +76,37 @@ routinesRouter.patch("/:routineId", requireUser, async (req, res, next) => {
   }
 });
 
-routinesRouter.delete("/:routineId", async (req, res, next) => {
-  const routineId = req.params.routineId;
+//
+
+routinesRouter.delete("/:routineId", requireUser, async (req, res, next) => {
+  const id = req.params.routineId;
+  console.log("ID!!", id);
+
   try {
-    const deleteRoutine = await destroyRoutine(routineId);
-    res.send(deleteRoutine);
+    const routine = await getRoutineById(id);
+    console.log("2ndHERE!!", routine);
+
+    if (!routine) {
+      next({
+        name: "noRoutine",
+        message: "There is no routine!",
+      });
+    } else if (req.user.id === routine.creatorId) {
+      const deletedRoutine = await destroyRoutine(id);
+      console.log("HERE!!", deletedRoutine);
+      res.send({ ...deletedRoutine, success: true });
+    } else {
+      next({
+        name: "notTheCreator",
+        message: "You're not the creator of this routine!",
+      });
+    }
   } catch (error) {
     next(error);
   }
 });
+
+//
 
 routinesRouter.post(
   "/:routineId/activities",
@@ -93,5 +128,7 @@ routinesRouter.post(
     }
   }
 );
+
+//
 
 module.exports = routinesRouter;
