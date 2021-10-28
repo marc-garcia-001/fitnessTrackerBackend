@@ -44,7 +44,7 @@ describe("API", () => {
     expect(typeof res.data.message).toEqual("string");
   });
 
-  describe("Users", () => {
+  xdescribe("Users", () => {
     let newUser = { username: "robert", password: "bobbylong321" };
     let newUserShortPassword = { username: "robertShort", password: "bobby21" };
     describe("POST /users/register", () => {
@@ -218,7 +218,7 @@ describe("API", () => {
       });
     });
   });
-  xdescribe("Routines", () => {
+  describe("Routines", () => {
     let routineToCreateAndUpdate = {
       isPublic: true,
       name: "Elliptical Day",

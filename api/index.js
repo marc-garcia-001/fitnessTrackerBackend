@@ -40,6 +40,13 @@ apiRouter.use(async (req, res, next) => {
   }
 });
 
+
+apiRouter.get("/health", async (req, res, next) => {
+  res.send({
+    message: "The server is healthy",
+  });
+});
+
 const usersRouter = require("./users");
 apiRouter.use("/users", usersRouter);
 
