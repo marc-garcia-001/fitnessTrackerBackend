@@ -8,14 +8,14 @@ const {
   destroyRoutine,
   addActivityToRoutine,
 } = require("../db");
-
+const { requireUser } = require("../utilities");
 
 routinesRouter.get("/routines", async (req, res, next) => {
   try {
     const routines = await getAllPublicRoutines();
     res.send(routines);
 
-    return getAllPublicRoutines(); 
+    return getAllPublicRoutines();
   } catch (error) {
     next(error);
   }

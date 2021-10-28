@@ -40,7 +40,6 @@ apiRouter.use(async (req, res, next) => {
   }
 });
 
-
 apiRouter.get("/health", async (req, res, next) => {
   res.send({
     message: "The server is healthy",
@@ -52,6 +51,9 @@ apiRouter.use("/users", usersRouter);
 
 const activitiesRouter = require("./activities");
 apiRouter.use("/activities", activitiesRouter);
+
+const routinesRouter = require("./routines");
+apiRouter.use("./routines.js", routinesRouter);
 
 apiRouter.use((error, req, res, next) => {
   res.send(error);
