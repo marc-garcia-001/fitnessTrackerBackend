@@ -131,7 +131,7 @@ routinesRouter.post(
             return false;
           }
         });
-      console.log(filteredRoutineActivities, "FILTER!!");
+      
       if (filteredRoutineActivities && filteredRoutineActivities.length) {
         next({
           name: "routineExistsError",
@@ -141,7 +141,7 @@ routinesRouter.post(
         const addSingleActivity = await addActivityToRoutine(
           ActivityForRoutine
         );
-        console.log(addSingleActivity, "SINGLE !!!!!!");
+        
         if (addSingleActivity) {
           res.send(addSingleActivity);
         } else {

@@ -39,7 +39,7 @@ async function addActivityToRoutine({
 	    `,
       [routineId, activityId, count, duration]
     );
-    console.log(routineActivity, "ACT!!!!!!")
+  
     return routineActivity;
   } catch (err) {
     throw err;
@@ -87,7 +87,7 @@ async function destroyRoutineActivity(id) {
 }
 
 async function getRoutineActivitiesByRoutine({ id }) {
-  console.log(id, "ID!!!!")
+ 
   try {
     const { rows: activities } = await client.query(
       `
