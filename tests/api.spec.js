@@ -305,6 +305,7 @@ describe("API", () => {
           name: "Pull Ups",
           goal: "10 pull ups",
         });
+        
         const { data: respondedRoutineActivity } = await axios.post(
           `${API_URL}/api/routines/${newRoutine.id}/activities`,
           { routineId: newRoutine.id, ...routineActivityToCreateAndUpdate },
@@ -324,6 +325,7 @@ describe("API", () => {
             routineActivityToCreateAndUpdate,
             { headers: { Authorization: `Bearer ${token}` } }
           );
+         
         } catch (err) {
           duplicateIdsResp = err.response;
         }

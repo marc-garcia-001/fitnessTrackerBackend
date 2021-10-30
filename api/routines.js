@@ -8,6 +8,7 @@ const {
   destroyRoutine,
   addActivityToRoutine,
   destroyRoutineActivity,
+  getRoutineActivitiesByRoutine,
 } = require("../db");
 const { requireUser } = require("../utilities");
 
@@ -80,11 +81,9 @@ routinesRouter.patch("/:routineId", requireUser, async (req, res, next) => {
 
 routinesRouter.delete("/:routineId", requireUser, async (req, res, next) => {
   const id = req.params.routineId;
-  console.log("ID!!", id);
 
   try {
     const routine = await getRoutineById(id);
-    console.log("2ndHERE!!", routine);
 
     if (!routine) {
       next({
@@ -93,7 +92,6 @@ routinesRouter.delete("/:routineId", requireUser, async (req, res, next) => {
       });
     } else if (req.user.id === routine.creatorId) {
       const deletedRoutine = await destroyRoutine(id);
-      console.log("HERE!!", deletedRoutine);
       res.send({ ...deletedRoutine, success: true });
     } else {
       next({
@@ -120,10 +118,41 @@ routinesRouter.post(
       ActivityForRoutine.count = count;
       ActivityForRoutine.duration = duration;
 
-      const addSingleActivity = await addActivityToRoutine(ActivityForRoutine);
+      const doesRoutineActivityExist = await getRoutineActivitiesByRoutine({
+        id: req.params.routineId,
+      });
 
-      res.send(addSingleActivity);
+      const filteredRoutineActivities =
+        doesRoutineActivityExist &&
+        doesRoutineActivityExist.filter(function (elem) {
+          if (elem.activityId === activityId) {
+            return true;
+          } else {
+            return false;
+          }
+        });
+      
+      if (filteredRoutineActivities && filteredRoutineActivities.length) {
+        next({
+          name: "routineExistsError",
+          message: "this routine already esists",
+        });
+      } else {
+        const addSingleActivity = await addActivityToRoutine(
+          ActivityForRoutine
+        );
+        
+        if (addSingleActivity) {
+          res.send(addSingleActivity);
+        } else {
+          next({
+            name: "activity",
+            message: "activity creation failed",
+          });
+        }
+      }
     } catch (error) {
+     
       next(error);
     }
   }

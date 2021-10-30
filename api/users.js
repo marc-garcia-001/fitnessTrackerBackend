@@ -98,7 +98,7 @@ usersRouter.post("/login", async (req, res, next) => {
       });
     }
   } catch (error) {
-    console.log(error);
+    
     next(error);
   }
 });
@@ -117,7 +117,7 @@ usersRouter.get("/me", requireUser, async (req, res, next) => {
 
 usersRouter.get("/:username/routines", async (req, res, next) => {
   const { username } = req.params;
-  console.log(username);
+ 
 
   try {
     const userRoutines = await getPublicRoutinesByUser({ username });

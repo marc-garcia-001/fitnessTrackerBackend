@@ -1,3 +1,4 @@
+
 const client = require("./client");
 
 async function getRoutineActivityById(id) {
@@ -26,7 +27,7 @@ async function addActivityToRoutine({
   duration,
 }) {
   try {
-  
+   
     const {
       rows: [routineActivity],
     } = await client.query(
@@ -38,7 +39,7 @@ async function addActivityToRoutine({
 	    `,
       [routineId, activityId, count, duration]
     );
-    
+  
     return routineActivity;
   } catch (err) {
     throw err;
@@ -86,6 +87,7 @@ async function destroyRoutineActivity(id) {
 }
 
 async function getRoutineActivitiesByRoutine({ id }) {
+ 
   try {
     const { rows: activities } = await client.query(
       `
